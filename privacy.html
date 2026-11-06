@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Політика конфіденційності застосунку Світлограф — графіки відключень світла">
+<title>Конфіденційність Світлографа</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&family=IBM+Plex+Sans:wght@400;500&display=swap">
+<style>
+/* Layout: single readable column, a summary strip of facts, then the policy sections; amber bolt from the app as the only accent */
+:root{
+  --bg:#f6f7fa; --surface:#ffffff; --fg:#141a26; --muted:#556074; --line:#dde2ea; --accent:#b7860b; --accent-soft:#fdf3d0;
+  --display:"Manrope","Segoe UI",system-ui,sans-serif; --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0b0f17;--surface:#131a2a;--fg:#eef2f7;--muted:#97a3b6;--line:#243049;--accent:#facc15;--accent-soft:#2a2610;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b0f17;--surface:#131a2a;--fg:#eef2f7;--muted:#97a3b6;--line:#243049;--accent:#facc15;--accent-soft:#2a2610;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.65 var(--body)}
+.wrap{max-width:44rem;margin:0 auto;padding-inline:20px;padding-block:48px 64px}
+header{display:flex;gap:16px;align-items:center;margin-bottom:8px}
+.mark{width:52px;height:52px;flex:none;border-radius:14px;background:#0b0f17;display:grid;place-items:center}
+h1{font:800 clamp(1.7rem,4vw,2.3rem)/1.15 var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.date{color:var(--muted);font-size:.92rem;margin:4px 0 0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));gap:10px;margin:32px 0 40px;padding:0;list-style:none}
+.facts li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:.95rem;line-height:1.4}
+.facts b{display:block;font:600 1.02rem var(--display);margin-bottom:2px}
+h2{font:600 1.2rem/1.3 var(--display);margin:36px 0 8px;text-wrap:balance}
+p,li{max-width:65ch}
+ul.list{padding-left:1.2rem;margin:8px 0}
+ul.list li{margin:4px 0}
+code{font-size:.9em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;word-break:break-word}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+hr{border:0;border-top:1px solid var(--line);margin:48px 0 8px}
+.en h2{font-size:1.05rem}
+.en{color:var(--muted)}
+.en strong{color:var(--fg)}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+<header>
+  <div class="mark" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24"><path fill="#facc15" d="M13,2 L4.5,13.5 H11 L10,22 L19.5,9.5 H13 Z"/></svg></div>
+  <div>
+    <h1>Політика конфіденційності «Світлограф»</h1>
+    <p class="date">Оновлено 4 листопада 2026 року · застосунок для Android <code>ua.maks.svitlo</code></p>
+  </div>
+</header>
+
+<ul class="facts">
+  <li><b>Без акаунтів</b>Реєстрація не потрібна, ми не знаємо, хто ви.</li>
+  <li><b>Реклама Google AdMob</b>Банер унизу головного екрана й екрана адреси. Власної аналітики й трекерів немає.</li>
+  <li><b>Дані на телефоні</b>Адреси й налаштування зберігаються лише у вашому пристрої.</li>
+</ul>
+
+<h2>Що зберігає застосунок</h2>
+<p>Адреси, які ви додаєте (назва на кшталт «Дім», область, вулиця, будинок, черга відключень), налаштування сповіщень, мову й тему застосунок зберігає лише в пам'яті вашого телефона. Розробник не отримує цих даних і не має до них доступу.</p>
+<p>Якщо в налаштуваннях Android увімкнено резервне копіювання, система може додати дані застосунку до вашої резервної копії Google. Цим керує Android і ваш акаунт Google, а не Світлограф.</p>
+
+<h2>Що надсилається в інтернет</h2>
+<p>Щоб показувати графіки, застосунок завантажує загальнодоступні дані про відключення:</p>
+<ul class="list">
+  <li><strong>YASNO</strong> (<code>app.yasno.ua</code>) — графіки для Києва та Дніпра. Коли ви шукаєте адресу в цих містах, у YASNO надсилається текст пошуку вулиці та номер будинку, щоб визначити вашу чергу. Ім'я, телефон чи інші особисті дані не передаються.</li>
+  <li><strong>Відкриті набори даних на GitHub</strong> (<code>raw.githubusercontent.com</code>) і проміжні сервіси <code>svitlo-proxy.workers.dev</code> — графіки ДТЕК (зокрема основне джерело для Києва та Дніпра) та обленерго інших областей. Застосунок лише завантажує ці файли, нічого про вас не надсилаючи.</li>
+  <li><strong>Сайти ДТЕК</strong> (<code>dtek-kem.com.ua</code>, <code>dtek-krem.com.ua</code>, <code>dtek-dnem.com.ua</code>, <code>dtek-oem.com.ua</code>) — для адрес у Києві, Київській, Дніпропетровській та Одеській областях застосунок у фоні відкриває офіційну сторінку відключень ДТЕК і вказує там збережену адресу (населений пункт, вулицю, будинок), щоб дізнатися, чи є зараз світло і коли його очікують. Інші дані ДТЕК не передаються. Ці сайти використовують власні cookie, які зберігаються лише на вашому телефоні.</li>
+  <li><strong>Сайти обленерго.</strong> Кнопка «Дізнатися чергу» відкриває офіційну сторінку вашого обленерго у вбудованому браузері. Те, що ви вводите на цій сторінці, отримує саме обленерго за власними правилами.</li>
+</ul>
+<p>Як і під час будь-якого запиту в інтернеті, ці сервіси бачать IP-адресу вашого пристрою. Їхня обробка даних регулюється їхніми власними політиками.</p>
+
+<h2>Реклама</h2>
+<p>Унизу головного екрана й екрана адреси Світлограф показує рекламний банер Google AdMob. Віджети й сповіщення реклами не містять. Рекламу підбирає й показує Google, розробник не бачить, хто саме її переглядає.</p>
+<p>Для показу реклами Google Mobile Ads SDK може збирати й передавати Google: рекламний ідентифікатор пристрою (Android Advertising ID), IP-адресу, приблизне місцезнаходження за IP, модель пристрою й версію Android, а також дані про покази й натискання реклами. Ці дані використовуються для показу й вимірювання реклами, запобігання шахрайству та, якщо ви погодилися, для персоналізації. Обробка регулюється <a href="https://policies.google.com/technologies/partner-sites">правилами Google щодо використання даних партнерів</a> і <a href="https://policies.google.com/privacy">політикою конфіденційності Google</a>.</p>
+<ul class="list">
+  <li><strong>ЄС, Велика Британія, Швейцарія:</strong> під час першого запуску з'являється вікно Google зі згодою. Ви можете погодитися, відмовитися або вибрати налаштування. Змінити рішення можна будь-коли в налаштуваннях застосунку («Конфіденційність реклами»).</li>
+  <li><strong>Персоналізацію можна вимкнути для всіх застосунків:</strong> Налаштування Android → Конфіденційність → Реклама → «Видалити рекламний ідентифікатор».</li>
+</ul>
+<p>Адреси, які ви зберігаєте у Світлографі, у рекламний SDK не передаються.</p>
+
+<h2>Дозволи</h2>
+<ul class="list">
+  <li><strong>Інтернет і стан мережі</strong> — завантаження графіків і реклами.</li>
+  <li><strong>Рекламний ідентифікатор</strong> (AD_ID і пов'язані дозволи Android Privacy Sandbox) — для показу й вимірювання реклами Google.</li>
+  <li><strong>Сповіщення</strong> — попередження про відключення, включення та зміну графіка.</li>
+  <li><strong>Точні будильники</strong> — щоб віджети й сповіщення перемикалися рівно в час зміни графіка. Дозвіл необов'язковий, без нього оновлення приходять з невеликою затримкою.</li>
+  <li><strong>Запуск після перезавантаження</strong> — щоб відновити розклад сповіщень.</li>
+</ul>
+
+<h2>Поширення зображень</h2>
+<p>Функція «Поділитися» створює зображення графіка на телефоні й передає його в застосунок, який ви оберете. Розробник цього зображення не отримує.</p>
+
+<h2>Покупка «Підтримати й вимкнути рекламу»</h2>
+<p>У налаштуваннях можна один раз придбати вимкнення реклами. Оплата повністю проходить у Google Play: розробник не отримує номер картки чи інші платіжні дані. Застосунок дізнається від Google Play лише те, чи є у вашому акаунті ця покупка, щоб вимкнути рекламу й відновити покупку на новому телефоні. Повернення коштів і чеки — через Google Play згідно з <a href="https://policies.google.com/privacy">політикою конфіденційності Google</a>.</p>
+
+<h2>Підтримка в Telegram</h2>
+<p>Пункт «Підтримка в Telegram» відкриває бота <code>@svitlograf_support_bot</code>. Разом із першим повідомленням бот передає розробникам технічні дані, які допомагають розібратися з проблемою: модель телефона, версію Android і версію Світлографа. Розробники бачать ваше ім'я та нік у Telegram і листування з ботом. Повідомлення проходять через сервер бота на Cloudflare. Ці дані використовуються лише для відповіді на ваше звернення й нікому не передаються. Писати в підтримку необов'язково, і без цього застосунок працює так само.</p>
+
+<h2>Діти</h2>
+<p>Застосунок не призначений спеціально для дітей і свідомо не збирає жодних даних про них.</p>
+
+<h2>Незалежність</h2>
+<p>Світлограф — незалежний застосунок. Він не є офіційним продуктом і не пов'язаний із ДТЕК, YASNO, обленерго чи державними органами. Актуальні графіки завжди можна перевірити на сайті свого постачальника.</p>
+
+<h2>Зміни та контакт</h2>
+<p>Якщо політика зміниться, оновлена версія з'явиться на цій сторінці з новою датою. З питань щодо конфіденційності пишіть на адресу розробника, вказану на сторінці Світлографа в Google Play.</p>
+
+<hr>
+<section class="en" lang="en">
+  <h2>English summary</h2>
+  <p><strong>Svitlograf</strong> has no accounts and no analytics of its own. It shows a Google AdMob banner at the bottom of the main and address screens (never in widgets or notifications); the Google Mobile Ads SDK may collect the advertising ID, IP address, approximate location, device information and ad interaction data for serving, measuring and (with consent) personalising ads, under Google's privacy policy. Users in the EEA, UK and Switzerland are asked for consent and can change it in the app settings. Your saved addresses and settings stay on your device and are never passed to the ads SDK. To show outage schedules the app downloads public data from YASNO, open datasets on GitHub and svitlo-proxy services; for Kyiv and Dnipro, the street search text and house number are sent to YASNO to determine your outage group. For addresses served by DTEK (Kyiv and the Kyiv, Dnipropetrovsk and Odesa regions) the app opens DTEK's official outage page in the background and enters your saved address to check whether power is on right now. The “Find my group” button opens your utility's official website, whose own policy applies. These services see your IP address like any web request. Svitlograf is independent and not affiliated with DTEK, YASNO or any utility. The optional “Support on Telegram” item opens the @svitlograf_support_bot bot and passes your phone model, Android version and app version so the developers can help; your Telegram name and messages are seen by the developers and used only to answer you. An optional one-time in-app purchase removes ads; payment is processed entirely by Google Play and the app only learns whether the purchase exists. Contact: the developer email listed on the app's Google Play page or the Telegram support bot.</p>
+</section>
+</div>
+
+</body>
+</html>
