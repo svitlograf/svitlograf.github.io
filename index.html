@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Світлограф — графік відключень світла на головному екрані</title>
+<meta name="description" content="Світлограф показує графік відключень світла для твоєї адреси: віджети на головному екрані, нагадування перед відключенням, графік на сьогодні, завтра й тиждень. Київ і області України. Безкоштовно в Google Play.">
+<meta property="og:title" content="Світлограф — графік відключень світла">
+<meta property="og:description" content="Коли вимкнуть світло — знаєш заздалегідь. Віджети, нагадування, кілька адрес. Безкоштовно в Google Play.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://svitlograf.github.io/">
+<meta name="theme-color" content="#0b0f17">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231b2232'/%3E%3Cpath d='M36 8 14 36h14l-4 20 24-30H34z' fill='%23facc15'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f17; --card:#161c2a; --line:#262f42; --text:#f1f5f9; --text2:#94a3b8; --text3:#64748b;
+  --on:#34d399; --off:#fb7185; --y:#facc15;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth;background:var(--bg)}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.slide{min-height:100vh;min-height:100svh;scroll-snap-align:start;display:flex;align-items:center;position:relative;overflow:hidden;padding:72px 24px}
+.wrap{width:100%;max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.slide.flip .wrap{grid-template-columns:.95fr 1.05fr}
+.slide.flip .text{order:2}
+.glow{position:absolute;border-radius:50%;filter:blur(110px);opacity:.22;pointer-events:none}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--y);margin-bottom:18px}
+h1{font-size:clamp(44px,7vw,84px);line-height:1;font-weight:800;letter-spacing:-.03em}
+h2{font-size:clamp(34px,4.6vw,56px);line-height:1.05;font-weight:800;letter-spacing:-.02em}
+.lead{font-size:clamp(18px,2vw,22px);line-height:1.5;color:var(--text2);margin-top:20px;max-width:34ch}
+.list{list-style:none;margin-top:26px;display:grid;gap:14px}
+.list li{display:flex;gap:12px;align-items:flex-start;font-size:17px;line-height:1.45;color:var(--text)}
+.list li span.dot{flex:none;width:10px;height:10px;border-radius:50%;margin-top:8px}
+.green{color:var(--on)} .red{color:var(--off)} .yellow{color:var(--y)}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.logo{width:56px;height:56px;border-radius:16px;background:#1b2232;display:grid;place-items:center;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.brand b{font-size:22px;font-weight:700}
+.cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:12px;background:var(--y);color:#111827;text-decoration:none;font-weight:700;font-size:18px;padding:16px 26px;border-radius:999px;box-shadow:0 10px 30px rgba(250,204,21,.25);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line);box-shadow:none;font-weight:600;font-size:16px;padding:14px 22px}
+.note{font-size:14px;color:var(--text3);margin-top:14px}
+.phone{justify-self:center;width:min(300px,72vw);aspect-ratio:1080/2376;border-radius:44px;padding:10px;background:#1c2028;border:1px solid #333b4b;box-shadow:0 40px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.03) inset;position:relative}
+.phone img{width:100%;height:100%;object-fit:cover;border-radius:35px;display:block}
+.phone.tilt{transform:rotate(-3deg)}
+.duo{justify-self:center;position:relative;width:min(470px,90vw);height:min(560px,120vw)}
+.duo .phone{position:absolute;width:min(250px,48vw)}
+.duo .phone:first-child{left:0;top:40px;transform:rotate(-5deg)}
+.duo .phone:last-child{right:0;top:0;transform:rotate(4deg)}
+.badge{display:inline-flex;align-items:center;gap:10px;background:#1e2638;border:1px solid #344058;border-radius:999px;padding:10px 18px;font-weight:600;font-size:16px;margin-top:24px}
+.regions{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.regions span{background:var(--card);border:1px solid var(--line);color:var(--text2);border-radius:999px;padding:7px 13px;font-size:14px}
+.regions span.hl{color:var(--text);border-color:#3b4a66}
+.mini{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:22px 24px;box-shadow:0 30px 60px rgba(0,0,0,.45);width:min(460px,90vw);justify-self:center}
+.mini .row{display:flex;justify-content:space-between;align-items:baseline}
+.mini .st{font-size:34px;font-weight:800}
+.mini .bar{display:grid;grid-template-columns:repeat(24,1fr);gap:4px;margin-top:16px}
+.mini .bar i{height:28px;border-radius:9px;background:var(--on)}
+.mini .bar i.o{background:var(--off)}
+.mini .bar i.p{opacity:.38}
+.mini .lbl{font-size:13px;color:var(--text2);margin-top:14px}
+.mini .ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--text3);margin-top:8px}
+.foot{display:flex;flex-wrap:wrap;gap:22px;margin-top:40px;font-size:15px;color:var(--text2)}
+.foot a{text-decoration:none;border-bottom:1px solid var(--line)}
+.foot a:hover{color:var(--text)}
+.disclaimer{font-size:13px;color:var(--text3);margin-top:22px;max-width:60ch;line-height:1.5}
+nav.dots{position:fixed;right:22px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:10}
+nav.dots a{width:10px;height:10px;border-radius:50%;background:#334155;transition:all .2s;display:block}
+nav.dots a.on{background:var(--y);height:26px;border-radius:6px}
+.hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:var(--text3);font-size:13px;display:flex;flex-direction:column;align-items:center;gap:6px;animation:b 2s infinite}
+@keyframes b{50%{transform:translate(-50%,6px)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.slide.seen .reveal{opacity:1;transform:none}
+.slide.seen .reveal.d2{transition-delay:.15s}
+@media (max-width:860px){
+  html{scroll-snap-type:none}
+  .slide{min-height:auto;padding:64px 20px}
+  .slide:first-child{min-height:100svh}
+  .wrap,.slide.flip .wrap{grid-template-columns:1fr;gap:40px}
+  .slide.flip .text{order:0}
+  nav.dots{display:none}
+  .hint{display:none}
+  .lead{max-width:none}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.hint{animation:none}}
+</style>
+</head>
+<body>
+
+<nav class="dots" aria-label="Слайди"></nav>
+
+<!-- 1. Обкладинка -->
+<section class="slide" id="start">
+  <div class="glow" style="width:520px;height:520px;background:var(--y);left:-160px;top:-180px"></div>
+  <div class="glow" style="width:620px;height:620px;background:var(--on);right:-200px;bottom:-260px;opacity:.15"></div>
+  <div class="wrap">
+    <div class="text reveal">
+      <div class="brand">
+        <div class="logo"><svg width="30" height="30" viewBox="0 0 64 64"><path d="M38 4 12 38h16l-4 22 28-34H36z" fill="#facc15"/></svg></div>
+        <b>Світлограф</b>
+      </div>
+      <h1>Коли вимкнуть світло?</h1>
+      <p class="lead">Світлограф знає заздалегідь. Графік відключень для твоєї адреси — просто на головному екрані.</p>
+      <div class="cta">
+        <a class="btn" href="https://play.google.com/store/apps/details?id=ua.maks.svitlo&amp;referrer=utm_source%3Dsite%26utm_campaign%3Dlanding" target="_blank" rel="noopener">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 2.5v19l10.2-9.5z" fill="#111827"/><path d="m14.2 12 3.3 3.1L5.6 21.8z M14.2 12l3.3-3.1L5.6 2.2z M17.5 8.9 21 11a1.2 1.2 0 0 1 0 2l-3.5 2.1-3.3-3.1z" fill="#111827" opacity=".75"/></svg>
+          Завантажити в Google Play
+        </a>
+      </div>
+      <p class="note">Безкоштовно · без реєстрації · 🇺🇦 по всій Україні</p>
+    </div>
+    <div class="phone tilt reveal d2"><img src="img/lock.webp" alt="Віджет Світлографа на екрані блокування: Дім, немає світла, ще 42 хвилини"></div>
+  </div>
+  <div class="hint">гортай<svg width="16" height="16" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none"/></svg></div>
+</section>
+
+<!-- 2. Усі адреси -->
+<section class="slide flip" id="addresses">
+  <div class="glow" style="width:520px;height:520px;background:var(--on);left:-180px;top:20%"></div>
+  <div class="wrap">
+    <div class="text reveal">
+      <div class="kicker">01 · Адреси</div>
+      <h2>Дім, робота, батьки — усе на одному екрані</h2>
+      <p class="lead">Додай кілька адрес зі своїми назвами. Черга визначається за адресою, а ти одразу бачиш, де світло є, а де немає.</p>
+      <ul class="list">
+        <li><span class="dot" style="background:var(--on)"></span>Стан зараз і скільки ще чекати</li>
+        <li><span class="dot" style="background:var(--off)"></span>Наступне відключення для кожної адреси</li>
+        <li><span class="dot" style="background:var(--y)"></span>Київ і Дніпро — черга за адресою автоматично</li>
+      </ul>
+    </div>
+    <div class="phone reveal d2"><img src="img/main.webp" alt="Головний екран Світлографа з адресами Дім, Робота, Батьки" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- 3. Графік -->
+<section class="slide" id="schedule">
+  <div class="glow" style="width:560px;height:560px;background:var(--off);right:-200px;top:10%;opacity:.14"></div>
+  <div class="wrap">
+    <div class="text reveal">
+      <div class="kicker">02 · Графік</div>
+      <h2>Коли зникне і коли повернеться</h2>
+      <p class="lead">Точний розклад на сьогодні, завтра й тиждень наперед: кожен проміжок із часом і тривалістю, поточний — підсвічено.</p>
+      <ul class="list">
+        <li><span class="dot" style="background:var(--off)"></span>Стабілізаційні, планові й аварійні відключення</li>
+        <li><span class="dot" style="background:var(--on)"></span>Графік на завтра, щойно його опублікують</li>
+        <li><span class="dot" style="background:var(--text3)"></span>Ймовірний графік, коли офіційного ще немає</li>
+      </ul>
+    </div>
+    <div class="phone reveal d2"><img src="img/address.webp" alt="Екран адреси: графік на сьогодні з проміжками світла й відключень" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- 4. Віджети -->
+<section class="slide flip" id="widgets">
+  <div class="glow" style="width:620px;height:620px;background:var(--y);left:-220px;bottom:-200px;opacity:.14"></div>
+  <div class="wrap">
+    <div class="text reveal">
+      <div class="kicker">03 · Віджети</div>
+      <h2>Видно без відкриття застосунку</h2>
+      <p class="lead">Три розміри віджетів для головного екрана й екрана блокування. Одна адреса або всі одразу — з таймером до зміни.</p>
+      <ul class="list">
+        <li><span class="dot" style="background:var(--on)"></span>«Світло є · ще 2:11:30 · Далі 03:30–11:00»</li>
+        <li><span class="dot" style="background:var(--y)"></span>Підлаштовуються під великий шрифт телефона</li>
+        <li><span class="dot" style="background:var(--text2)"></span>Прозорість на твій смак</li>
+      </ul>
+    </div>
+    <div class="phone reveal d2"><img src="img/widgets.webp" alt="Три віджети Світлографа на головному екрані" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- 5. Нагадування -->
+<section class="slide" id="alerts">
+  <div class="glow" style="width:520px;height:520px;background:var(--on);right:-160px;top:-120px;opacity:.14"></div>
+  <div class="wrap">
+    <div class="text reveal">
+      <div class="kicker">04 · Нагадування</div>
+      <h2>Попередить заздалегідь</h2>
+      <p class="lead">Встигни зарядити телефон, павербанк і поставити чайник — Світлограф нагадає саме тоді, коли тобі зручно.</p>
+      <ul class="list">
+        <li><span class="dot" style="background:var(--off)"></span>Перед відключенням: у момент, за 10, 15, 30 чи 60 хв</li>
+        <li><span class="dot" style="background:var(--on)"></span>Коли світло має повернутися</li>
+        <li><span class="dot" style="background:var(--y)"></span>Зміни графіка, ранковий підсумок, тиша вночі</li>
+      </ul>
+    </div>
+    <div class="phone reveal d2"><img src="img/settings.webp" alt="Налаштування нагадувань: за 10, 15, 30 чи 60 хвилин" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- 6. Україна -->
+<section class="slide flip" id="ukraine">
+  <div class="glow" style="width:520px;height:520px;background:#3b82f6;left:-160px;top:-100px;opacity:.16"></div>
+  <div class="glow" style="width:520px;height:520px;background:var(--y);right:-160px;bottom:-160px;opacity:.14"></div>
+  <div class="wrap">
+    <div class="text reveal">
+      <div class="kicker">05 · Покриття</div>
+      <h2>Київ і області — по всій Україні</h2>
+      <p class="lead">Графіки ДТЕК, YASNO та обленерго. Для областей — кнопка «Дізнатися чергу» з офіційним сайтом постачальника.</p>
+      <div class="regions">
+        <span class="hl">Київ</span><span class="hl">Київська</span><span>Одеська</span><span>Дніпропетровська</span><span>Львівська</span><span>Харківська</span><span>Вінницька</span><span>Полтавська</span><span>Житомирська</span><span>Миколаївська</span><span>Черкаська</span><span>Чернігівська</span><span>Сумська</span><span>Запорізька</span><span>Хмельницька</span><span>Рівненська</span><span>Волинська</span><span>Тернопільська</span><span>Закарпатська</span><span>Івано-Франківська</span><span>Кіровоградська</span><span>Чернівецька</span>
+      </div>
+    </div>
+    <div class="mini reveal d2" aria-label="Приклад віджета">
+      <div class="row"><b style="font-size:18px">🏠 Дім</b><span style="color:var(--text2);font-weight:500">Далі: <span class="red">18:00–20:00</span></span></div>
+      <div class="row" style="margin-top:8px"><span class="st green">Світло є</span><b style="font-size:22px">ще 1:42:15</b></div>
+      <div class="lbl">Сьогодні</div>
+      <div class="bar" id="today"></div>
+      <div class="lbl">Завтра</div>
+      <div class="bar" id="tomorrow"></div>
+      <div class="ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Фінал -->
+<section class="slide" id="get">
+  <div class="glow" style="width:700px;height:700px;background:var(--y);left:50%;top:50%;transform:translate(-50%,-50%);opacity:.12"></div>
+  <div class="wrap" style="grid-template-columns:1fr;text-align:center;justify-items:center">
+    <div class="reveal" style="display:flex;flex-direction:column;align-items:center">
+      <div class="logo" style="width:84px;height:84px;border-radius:24px;margin-bottom:26px"><svg width="44" height="44" viewBox="0 0 64 64"><path d="M38 4 12 38h16l-4 22 28-34H36z" fill="#facc15"/></svg></div>
+      <h2>Світлограф</h2>
+      <p class="lead" style="margin-left:auto;margin-right:auto;text-align:center">Безкоштовно в Google Play. Без реєстрації — адреси зберігаються лише на твоєму телефоні.</p>
+      <div class="cta" style="justify-content:center">
+        <a class="btn" href="https://play.google.com/store/apps/details?id=ua.maks.svitlo&amp;referrer=utm_source%3Dsite%26utm_campaign%3Dlanding_end" target="_blank" rel="noopener">Завантажити в Google Play</a>
+        <a class="btn ghost" href="https://t.me/svitlograf_support_bot" target="_blank" rel="noopener">✈️ Підтримка в Telegram</a>
+      </div>
+      <div class="foot" style="justify-content:center">
+        <a href="privacy.html">Політика конфіденційності</a>
+        <a href="mailto:maxstudioapplication@gmail.com">maxstudioapplication@gmail.com</a>
+      </div>
+      <p class="disclaimer" style="margin-left:auto;margin-right:auto">Світлограф — незалежний застосунок українського розробника. Він не є офіційним продуктом і не пов'язаний із ДТЕК, YASNO чи обленерго. Дані беруться із загальнодоступних джерел; у разі сумніву звіряйтеся з сайтом свого постачальника.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+// шкали «Сьогодні / Завтра» на слайді покриття
+(function(){
+  var today='nnnfffffhnnffffnnnffnnnn', tom='ffnnnnfffffnnnffffnnffnn', now=16;
+  function fill(id,s,past){var el=document.getElementById(id);for(var i=0;i<24;i++){var b=document.createElement('i');var c=s[i];if(c==='f')b.className='o';if(c==='h'){b.style.background='linear-gradient(90deg,var(--on) 50%,var(--off) 50%)'}if(past&&i<now)b.className+=' p';el.appendChild(b)}}
+  fill('today',today,true);fill('tomorrow',tom,false);
+})();
+// крапки навігації й поява слайдів
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide')),nav=document.querySelector('nav.dots');
+  slides.forEach(function(s){var a=document.createElement('a');a.href='#'+s.id;a.setAttribute('aria-label',s.id);nav.appendChild(a)});
+  var dots=[].slice.call(nav.children);
+  if(!('IntersectionObserver' in window)){slides.forEach(function(s){s.classList.add('seen')});return}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('seen');var i=slides.indexOf(e.target);dots.forEach(function(d,j){d.classList.toggle('on',i===j)})}})},{threshold:.45});
+  slides.forEach(function(s){io.observe(s)});
+  document.addEventListener('keydown',function(e){
+    if(['ArrowDown','PageDown','ArrowUp','PageUp'].indexOf(e.key)<0)return;
+    var i=dots.findIndex(function(d){return d.classList.contains('on')});
+    var n=(e.key==='ArrowDown'||e.key==='PageDown')?Math.min(i+1,slides.length-1):Math.max(i-1,0);
+    if(n!==i){e.preventDefault();slides[n].scrollIntoView({behavior:'smooth'})}
+  });
+})();
+</script>
+</body>
+</html>
